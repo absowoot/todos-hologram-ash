@@ -20,14 +20,12 @@ defmodule TodosHolo.Components.TodoCheckbox do
   def template do
     # <input type="checkbox" checked={@todo.done} /> does not work
     ~HOLO"""
-    <li>
-      {%if @todo.done}
-        <input type="checkbox" id={@todo.id} $change="toggle_done" checked />
-      {%else}
-        <input type="checkbox" id={@todo.id} $change="toggle_done" />
-      {/if}
-      <label for={@todo.id} class={@class_name}>{@todo.title}</label>
-    </li>
+    {%if @todo.done}
+      <input type="checkbox" id={@todo.id} $change="toggle_done" checked />
+    {%else}
+      <input type="checkbox" id={@todo.id} $change="toggle_done" />
+    {/if}
+    <label for={@todo.id} class={@class_name}>{@todo.title}</label>
     """
   end
 
