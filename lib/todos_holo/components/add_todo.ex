@@ -14,14 +14,15 @@ defmodule TodosHolo.Components.AddTodo do
 
   def action(:add_todo, %{event: %{"title" => title}}, component) do
     component
+    |> put_state(:title, "")
     |> put_command(:add_todo, title: title)
     # Reset the title after adding a todo (value is not updated in the dom)
-    |> put_state(:title, "")
-    |> put_page(TodosHolo.HomePage)
   end
 
   def command(:add_todo, params, server) do
-    Todos.List.create_todo!(params.title)
+    todo = Todos.List.create_todo!(params.title)
+    
     server
+    |> put_action(name: :add_todo, target: "page", params: %{todo: todo})
   end
 end

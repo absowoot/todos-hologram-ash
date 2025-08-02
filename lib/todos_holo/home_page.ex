@@ -19,15 +19,40 @@ defmodule TodosHolo.HomePage do
   def template do
     ~HOLO"""
     <h1>Todos</h1>
-
+    
     <ul>
       {%for todo <- @todos}
         <li><TodoCheckbox cid={todo.id} todo={todo} /></li>
       {/for}
-      <li><AddTodo cid="new_todo" value="x" /></li>
-    </ul>
+      </ul>
+    <AddTodo cid="new_todo" />
 
-    <CleanupTodos cid="cleanup_todos" />
+    <CleanupTodos done_count={Enum.count(@todos, & &1.done)} />
     """
+  end
+  
+  def action(:add_todo, %{todo: todo}, component) do
+    todos = component.state.todos ++ [todo] |> IO.inspect()
+    
+    component
+    |> put_state(:todos, todos)
+  end
+  
+  def action(:refresh_todos, %{todos: todos}, component) do
+    component
+    |> put_state(:todos, todos)
+  end
+  
+  def command(:cleanup_todos, _params, server) do
+    status = Todos.List.done_todos!() |> Todos.List.cleanup_done(%{}) |> Map.get(:status, :error)
+    
+    todos = 
+      case status do
+        :success -> Todos.List.list_todos!()
+        :error -> []
+      end
+      
+    server
+    |> put_action(:refresh_todos, todos: todos)
   end
 end

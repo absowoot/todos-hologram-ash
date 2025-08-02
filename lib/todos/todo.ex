@@ -1,7 +1,8 @@
 defmodule Todos.Todo do
   use Ash.Resource,
     domain: Todos.List,
-    data_layer: Ash.DataLayer.Ets
+    data_layer: Ash.DataLayer.Ets,
+    extensions: [AshJason.Resource]
 
   require Ash.Query
 
