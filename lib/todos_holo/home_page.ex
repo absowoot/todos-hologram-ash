@@ -32,7 +32,7 @@ defmodule TodosHolo.HomePage do
   end
   
   def action(:add_todo, %{todo: todo}, component) do
-    todos = component.state.todos ++ [todo] |> IO.inspect()
+    todos = component.state.todos ++ [todo]
     
     component
     |> put_state(:todos, todos)
