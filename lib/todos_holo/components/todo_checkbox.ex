@@ -1,13 +1,13 @@
 defmodule TodosHolo.Components.TodoCheckbox do
   use Hologram.Component
 
-  prop :todo, :map
+  prop(:todo, :map)
 
-  
   def init(props, component) do
     component
     |> put_state(:todo, props.todo)
   end
+
   def init(params, component, _server) do
     component
     |> put_state(:todo, params.todo)
@@ -38,9 +38,8 @@ defmodule TodosHolo.Components.TodoCheckbox do
     else
       Todos.List.set_undone!(params.todo.id)
     end
-    
+
     todos = Todos.List.list_todos!()
-    
 
     server
     |> put_action(name: :refresh_todos, target: "page", params: %{todos: todos})
