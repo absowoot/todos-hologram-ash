@@ -14,9 +14,9 @@ defmodule TodosHolo.Components.AddTodo do
 
   def action(:add_todo, %{event: %{"title" => title}}, component) do
     component
+    # Reset the title after adding a todo (value is not updated in the dom)
     |> put_state(:title, "")
     |> put_command(:add_todo, title: title)
-    # Reset the title after adding a todo (value is not updated in the dom)
   end
 
   def command(:add_todo, params, server) do
