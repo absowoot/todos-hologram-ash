@@ -1,7 +1,7 @@
 defmodule TodosHolo.Components.AddTodo do
   use Hologram.Component
 
-  prop :title, :string, default: ""
+  prop(:title, :string, default: "")
 
   def template do
     ~HOLO"""
@@ -13,6 +13,8 @@ defmodule TodosHolo.Components.AddTodo do
   end
 
   def action(:add_todo, %{event: %{"title" => title}}, component) do
+    Hologram.JS.exec(~s|document.querySelector(".show-it").classList.toggle("hidden")|)
+
     component
     # Reset the title after adding a todo (value is not updated in the dom)
     |> put_state(:title, "")
@@ -21,7 +23,7 @@ defmodule TodosHolo.Components.AddTodo do
 
   def command(:add_todo, params, server) do
     todo = Todos.List.create_todo!(params.title)
-    
+
     server
     |> put_action(name: :add_todo, target: "page", params: %{todo: todo})
   end
